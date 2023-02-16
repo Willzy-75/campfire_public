@@ -22,7 +22,7 @@ public class Todo {
 	
 	private String username;
 	
-	@Size(min=3, message="Enter at least 10 characters")
+	@Size(min=3, message="Enter at least 3 characters")
 	private String description;
 	private LocalDate targetDate;
 	private boolean done;

@@ -1,6 +1,5 @@
 package com.campfireprojectv2.campfire.user;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -12,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
-import com.campfireprojectv2.campfire.user.User;
-import com.campfireprojectv2.campfire.user.UserRepository;
-
 import jakarta.validation.Valid;
 
 @Controller
@@ -65,9 +60,6 @@ public class UserControllerJpa {
 		String username = getLoggedInUsername(model);
 		user.setUsername(username);
 		userRepository.save(user);
-		
-//		userService.addUser(username, user.getDescription(), 
-//				user.getTargetDate(), user.isDone());
 		
 		return "redirect:list-users";
 	}

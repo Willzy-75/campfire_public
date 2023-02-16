@@ -1,4 +1,4 @@
-<%@ include file="common/header.jspf" %>
+<th class="text_color">Why</th><%@ include file="common/header.jspf" %>
 <%@ include file="common/navigation.jspf" %>
 
 <div class="container">
