@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @SessionAttributes("name")
 public class WelcomeController {
 
+	
+	// pass a usertype here
+	// use logic with if statements to render the correct template
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String gotoWelcomePage(ModelMap model) {
 		model.put("name", getLoggedinUsername());
