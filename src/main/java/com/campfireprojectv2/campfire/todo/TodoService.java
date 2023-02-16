@@ -14,13 +14,6 @@ public class TodoService {
 	private static List<Todo> todos = new ArrayList();
 	private static int todosCount = 0;
 	
-	static {
-		todos.add(new Todo(todosCount++, "Will", "Graduate", LocalDate.now().plusMonths(4), false));
-		todos.add(new Todo(todosCount++, "Will", "Cisco Cert", LocalDate.now().plusMonths(3), false));
-		todos.add(new Todo(todosCount++, "Will", "Capstone", LocalDate.now().plusMonths(4), false));
-		todos.add(new Todo(todosCount++, "Will", "Get Hired", LocalDate.now().plusMonths(6), false));
-	}
-	
 	public List<Todo> findByUsername(String username) {
 		Predicate<? super Todo> predicate = todo -> 
 			todo.getUsername().equalsIgnoreCase(username);
