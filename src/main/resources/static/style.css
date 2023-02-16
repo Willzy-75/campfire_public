@@ -1,0 +1,76 @@
+.animated-text {
+    position: relative;
+    animation: move-left 1.3s linear 1;
+    color: rgb(165, 116, 42);
+}
+
+@keyframes move-left {
+    from {
+        left: 250px;
+    }
+
+    to {
+        left: 0;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0.25;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+form,
+button,
+footer {
+    animation: fade-in 3s linear;
+}
+
+
+input[type="text"],
+input[type="password"] {
+    width: 250px;
+    height: 25px;
+    border: 1px solid rgb(209, 191, 179);
+    background-color: rgb(190, 209, 179);
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+button[type="submit"],
+button[type="new_user"] {
+    width: 100px;
+    background-color: #357437;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 10px;
+}
+
+form {
+    margin-left: 120px;
+    margin-top: 200px;
+}
+
+.dark-green-bar {
+    position: bottom;
+    /* Make the bar fixed to the top of the viewport */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 10px;
+    background-color: #006400;
+
+}
+
+footer {
+    position: fixed;
+    bottom: 3%;
+    color: coral;
+    text-align: center;
+    transform: translateX(+10%);
+}
