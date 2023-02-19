@@ -14,7 +14,8 @@ public class UserService {
 	private static int userCount = 100;
 	
 	public List<User> findByUsername(String username) {
-		Predicate<? super User> predicate = user -> user.getUsername().equalsIgnoreCase(username);
+		Predicate<? super User> predicate = user -> 
+			user.getUsername().equalsIgnoreCase(username);
 		return users.stream().filter(predicate).toList();
 	}
 	

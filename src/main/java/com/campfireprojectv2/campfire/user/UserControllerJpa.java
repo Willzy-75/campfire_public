@@ -66,9 +66,9 @@ public class UserControllerJpa {
 	
 	@RequestMapping("delete-user")
 	public String deleteUser(@RequestParam int id) {
-		// delete user redirect to list
+
 		userRepository.deleteById(id);
-//		userService.deleteById(id);
+
 		return "redirect:list-users";
 	}
 	

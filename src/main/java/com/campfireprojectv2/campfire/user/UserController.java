@@ -1,6 +1,5 @@
 package com.campfireprojectv2.campfire.user;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.security.core.Authentication;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-
-import com.campfireprojectv2.campfire.user.User;
 
 import jakarta.validation.Valid;
 
@@ -30,7 +27,7 @@ public class UserController {
 	public String listAllUsers(ModelMap model) {
 		String username = getLoggedInUsername(model);
 		List<User> users = userService.findByUsername(username);
-		model.addAttribute("users", "user");
+		model.addAttribute("users", users);
 		return "listUsers";
 	}
 	

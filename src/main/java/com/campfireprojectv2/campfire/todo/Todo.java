@@ -8,7 +8,6 @@ import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
 
 // this will be in a database: mySQL, Oracle, etc
-// initially we'll create a static list then shift to a database (H2, MySQL)
 
 // JPA allows us to map the
 // Bean -> to a table in the Database
