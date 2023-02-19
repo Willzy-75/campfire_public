@@ -24,7 +24,7 @@
 			</fieldset>
 			
 			<fieldset class="mb-3">
-				<form:label path="email">User Type</form:label>
+				<form:label path="email">User Email</form:label>
 				<form:input type="text" path="email" required="required"/>
 				<form:errors path="email" cssClass="text-warning"/>						
 			</fieldset>
