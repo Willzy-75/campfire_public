@@ -19,6 +19,12 @@ public class User {
 	public User() {
 		
 	}
+	
+	public User(String username, String usertype, boolean loggedIn) {
+		this.username=username;
+		this.usertype=usertype;
+		this.loggedIn=loggedIn;
+	}
 
 	public User(Integer id, String username, String password, String usertype, String email, boolean loggedIn) {
 
