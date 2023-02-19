@@ -18,8 +18,22 @@ public class WelcomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String gotoWelcomePage(ModelMap model) {
 		model.put("name", getLoggedinUsername());
-		
-		return "welcome";
+		switch(getLoggedinUsername()) {
+		case "Will": 
+			return "welcome";
+		case "Client":
+			return "welcome_client";
+		case "Tester":
+			return "welcome_tester";
+		case "Developer":
+			return "welcome_developer";
+		case "Engineer":
+			return "welcome_engineer";
+		case "Admin":
+			return "welcome_admin";
+		default:
+			return "welcome";
+		}	
 	}
 
 	private String getLoggedinUsername() {
