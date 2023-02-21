@@ -37,9 +37,6 @@ public class WelcomeController {
 		case "Engineer":
 			user = new User(getLoggedinUsername().toString(), "Engineer", true);
 			return "welcome_eng";
-		case "Admin":
-			user = new User(getLoggedinUsername().toString(), "Admin", true);
-			return "welcome_admin";
 		default:
 			return "welcome";
 		}	

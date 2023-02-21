@@ -5,7 +5,7 @@
 	<head>
 		<link href="webjars/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
 		<link href="webjars/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css">
-		<title>Client Page</title>
+		<title>Add Todo Page</title>
 	</head>
 	
 	<body style="
@@ -21,10 +21,11 @@
 	      	color: coral;
 	    	}
   			</style>
-			<div><h1>Welcome to Campfire Stories, Client!</h1></div>
+			<div><h1>Welcome to Campfire Stories!</h1></div>
 
 			<div><a href="list-todos">Manage</a> your to-do's.</div>
 			<div><a href="list-users">Manage</a> your users</div>
+			<div><a href="list-user-story">Manage</a> your user stories</div>
 		</div>
 		<script src="webjars/bootstrap/5.2.3/js/bootstrap.min.js"></script>
 		<script src="webjars/jquery/3.6.3/jquery.min.js"></script>

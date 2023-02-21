@@ -58,7 +58,6 @@ public class UserController {
 	
 	@RequestMapping("delete-user")
 	public String deleteUser(@RequestParam int id) {
-		// delete user redirect to list
 		userService.deleteById(id);
 		return "redirect:list-users";
 	}
