@@ -25,6 +25,7 @@
 			<div><a href="list-todos">Manage</a> your to-do's.</div>
 			<div><a href="list-users">Manage</a> your users</div>
 			<div><a href="list-user-story">Manage</a> your user stories</div>
+			<div><a href="list-id-scraper">Manage</a> your id scrapers</div>
 		</div>
 		<script src="webjars/bootstrap/5.2.3/js/bootstrap.min.js"></script>
 		<script src="webjars/jquery/3.6.3/jquery.min.js"></script>

@@ -17,13 +17,14 @@ public class UserStory {
 	private String whyToDo;
 	private boolean editable;
 	private int complexity;
+	private String urlInput;
 	
 	public UserStory() {
 		
 	}
 
 	public UserStory(int id, String name, String persona, String whatToDo, String whyToDo, boolean editable,
-			int complexity) {
+			int complexity, String urlInput) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -32,6 +33,7 @@ public class UserStory {
 		this.whyToDo = whyToDo;
 		this.editable = editable;
 		this.complexity = complexity;
+		this.urlInput = urlInput;
 	}
 
 	@Override
@@ -95,5 +97,13 @@ public class UserStory {
 	public void setComplexity(int complexity) {
 		this.complexity = complexity;
 	}
-	
+
+	public String getUrlInput() {
+		return urlInput;
+	}
+
+	public void setUrlInput(String urlInput) {
+		this.urlInput = urlInput;
+	}
+		
 }

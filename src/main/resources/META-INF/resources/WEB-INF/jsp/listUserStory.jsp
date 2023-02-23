@@ -14,6 +14,7 @@
 				<th class="text_color">Why to do it?</th>
 				<th class="text_color">Editable?</th>
 				<th class="text_color">Complexity</th>
+				<th class="text_color">URL</th>
 				<th></th>
 				<th></th>
 			</tr>
@@ -27,6 +28,7 @@
 					<td class="text_color">${userStory.whyToDo}</td>
 					<td class="text_color">${userStory.editable}</td>
 					<td class="text_color">${userStory.complexity}</td>
+					<td class="text_color">${userStory.urlInput}</td>
 					<td><a href="delete-user-story?id=${userStory.id}"
 						class="btn btn-warning">Delete</a></td>
 					<td><a href="update-user-story?id=${userStory.id}"

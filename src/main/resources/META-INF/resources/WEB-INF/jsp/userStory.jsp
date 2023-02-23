@@ -40,6 +40,12 @@
       <form:input type="text" path="complexity" required="required" class="form-control" id="complexity" />
       <form:errors path="complexity" cssClass="text-warning" />
     </div>
+    
+     <div class="col-md-6">
+      <label for="urlInput" class="form-label">URL?</label>
+      <form:input type="text" path="urlInput" required="required" class="form-control" id="urlInput" />
+      <form:errors path="urlInput" cssClass="text-warning" />
+    </div>
 
     <form:input type="hidden" path="id" />
     <div class="col-12">

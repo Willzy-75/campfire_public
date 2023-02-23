@@ -2,6 +2,8 @@ package com.campfireprojectv2.campfire.userStory;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,16 +27,25 @@ public class UserStoryControllerJpa {
 
     @RequestMapping("list-user-story")
     public String listAllUserStories(ModelMap model) {
-        List<UserStory> userStories = userStoryRepository.findAll();
+       	String username = getLoggedInUsername(model);
+    	List<UserStory> userStories = userStoryRepository.findByName(username);
         model.addAttribute("userStories", userStories);
         return "listUserStory";
     }
+    
+	private String getLoggedInUsername(ModelMap model) {
+		Authentication authentication = 
+				SecurityContextHolder.getContext().getAuthentication();
+		return authentication.getName();
+		
+	}
 
     // GET only need separate method for POST
     @RequestMapping(value = "add-user-story", method = RequestMethod.GET)
     public String showNewUserStoryPage(ModelMap model) {
-        UserStory userStory = new UserStory(1, "Enter Name", "Enter Persona", "Enter What to do?",
-                "Enter Why to do it?", false, 2);
+    	String username = getLoggedInUsername(model);
+        UserStory userStory = new UserStory(1, username, "Enter Persona", "Enter What to do?",
+                "Enter Why to do it?", false, 2, "URL");
         model.put("userStory", userStory);
         return "userStory";
     }
