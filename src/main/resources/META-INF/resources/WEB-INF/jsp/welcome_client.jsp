@@ -4,8 +4,7 @@
 <html>
 	<head>
 		<link href="webjars/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
-		<link href="webjars/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css">
-		<title>Add Todo Page</title>
+		<title>Campfire</title>
 	</head>
 	
 	<body style="
@@ -14,7 +13,7 @@
 		background-repeat: no-repeat;
 		background-attachment: fixed;"
 	>
-		<%@ include file="common/navigation.jspf" %>
+		<%@ include file="common/navigation_client.jspf" %>
 		<div class="container">
 			<style>
 			  	.container {
