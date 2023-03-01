@@ -22,7 +22,7 @@ public class WelcomeController {
 		switch(getLoggedinUsername()) {
 		case "Will": 
 			user = new User(getLoggedinUsername().toString(), "Admin", true);
-			return "welcome";
+			return "welcome_admin";
 		case "Client":
 			user = new User(getLoggedinUsername().toString(), "Client", true);
 			return "welcome_client";

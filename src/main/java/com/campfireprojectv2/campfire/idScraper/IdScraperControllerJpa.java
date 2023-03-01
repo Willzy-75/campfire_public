@@ -85,23 +85,31 @@ public class IdScraperControllerJpa {
 	}
 	
 	
+	@RequestMapping(value = "run-id-scraper", method = RequestMethod.GET)
+	public String scrapeIds(@RequestParam String url, ModelMap model) {
+	    List<String> ids = new ArrayList<>();
+
+	    try {
+	        Document doc = Jsoup.connect(url).get();
+	        doc.getAllElements().forEach(element -> {
+	            String id = element.id();
+	            if (!id.isEmpty()) {
+	                ids.add(id);
+	            }
+	        });
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+
+	    String username = getLoggedInUsername(model);
+	    List<IdScraper> idScrapers = idScraperRepository.findByName(username);
+
+	    model.addAttribute("idScrapers", idScrapers);
+	    model.addAttribute("url", url);
+	    model.addAttribute("ids", ids);
+
+	    return "listIdScraper";
+	}
 	
-    public List<String> scrapeIds(@RequestParam String url) {
-        
-    	List<String> ids = new ArrayList<>();
 
-        try {
-            Document doc = Jsoup.connect(url).get();
-            doc.getAllElements().forEach(element -> {
-                String id = element.id();
-                if (!id.isEmpty()) {
-                    ids.add(id);
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return ids;
-    }
 }
