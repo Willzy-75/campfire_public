@@ -100,6 +100,7 @@ public class IdScraperControllerJpa {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	    
 
 	    String username = getLoggedInUsername(model);
 	    List<IdScraper> idScrapers = idScraperRepository.findByName(username);
@@ -108,8 +109,7 @@ public class IdScraperControllerJpa {
 	    model.addAttribute("url", url);
 	    model.addAttribute("ids", ids);
 
+
 	    return "listIdScraper";
 	}
-	
-
 }

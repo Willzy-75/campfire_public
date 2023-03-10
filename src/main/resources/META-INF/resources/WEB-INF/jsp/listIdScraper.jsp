@@ -31,11 +31,14 @@
 		</tbody>	
 	</table>	
 	<a href="add-id-scraper" class="btn btn-success">Add Id Scraper</a>
+
+
+
 	<table class="table">
 		<thead>
 			<tr>
 				<th class="text_color">URL</th>
-				<th class="text_color">Id's</th>
+				<th class="text_color">Ids</th>
 			</tr>
 		<tbody>
 			<c:forEach items="${ids}" var="id">
@@ -46,7 +49,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	
+
 </div>
 		
 <%@ include file="common/footer.jspf" %>
