@@ -90,6 +90,9 @@ public class IdScraperControllerJpa {
 	    List<String> ids = new ArrayList<>();
 
 	    try {
+	    	if(!url.startsWith("http://")) {
+	    		url = "http://" + url;
+	    	}
 	        Document doc = Jsoup.connect(url).get();
 	        doc.getAllElements().forEach(element -> {
 	            String id = element.id();
