@@ -41,9 +41,9 @@ public class PageFactoryGenerator {
                 + "import org.testng.annotations.BeforeClass;\n"
                 + "import org.testng.Reporter;\n"
                 + "import org.openqa.selenium.chrome.ChromeDriver;\n\n"
-                + "public class BasePage {\n"
+                + "public class BaseController {\n"
                 + "    private WebDriver driver;\n\n"
-                + "    public BasePage(WebDriver driver) {\n"
+                + "    public BaseController(WebDriver driver) {\n"
                 + "        this.driver = driver;\n"
                 + "    }\n\n"
                 + "    public void enterText(WebElement element, String text) {\n"
@@ -52,15 +52,6 @@ public class PageFactoryGenerator {
                 + "    }\n\n"
                 + "    public void clickButton(WebElement button) {\n"
                 + "        button.click();\n"
-                + "    }\n\n"
-                + "    @BeforeClass\n"
-                + "    public void setupApplication()\n"
-                + "    {\n\n"
-                + "        Reporter.log(\"=====Browser Session Started=====\", true);\n\n"
-                + "        driver=new ChromeDriver();\n\n"
-                + "        driver.manage().window().maximize();\n\n"
-                + "        driver.get(\"http://enterprise.demo.orangehrmlive.com/symfony/web/index.php/auth/login\");\n\n"
-                + "        Reporter.log(\"=====Application Started=====\", true);\n"
                 + "    }\n\n"
                 + "    @AfterClass\n"
                 + "    public void closeApplication()\n"
@@ -71,8 +62,38 @@ public class PageFactoryGenerator {
                 + "}\n";
     }
     
-    
-    
+    public static String generatePageController(String packageName, String name, List<String> ids) {
+        String className = name + "Controller";
+        String nameCamelCase = toCamelCase(name);
+        String nameCamelCaseFirstLower = toCamelCaseFirstLower(name);
+        
+        StringBuilder sb = new StringBuilder();
+        sb.append("package ").append(packageName).append(";\n\n");
+        sb.append("import org.openqa.selenium.WebElement;\n\n");
+        sb.append("public class ").append(className).append(" extends BaseController {\n\n");
+        sb.append("    private ").append(name).append(" ").append(nameCamelCaseFirstLower).append(";\n\n");
+        
+        sb.append("    public ").append(className).append("(WebDriver driver) {\n");
+        sb.append("        super(driver);\n");
+        sb.append("        this.").append(nameCamelCaseFirstLower).append(" = new ").append(name).append("(driver);\n");
+        sb.append("    }\n\n");
+        
+        for (String id : ids) {
+            String idCamelCase = toCamelCase(id);
+
+            sb.append("    public void click").append(idCamelCase).append("() {\n");
+            sb.append("        clickElement(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase).append("());\n");
+            sb.append("    }\n\n");
+
+            sb.append("    public void enter").append(idCamelCase).append("(String value) {\n");
+            sb.append("        enterText(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase).append("(), value);\n");
+            sb.append("    }\n\n");
+        }
+
+        sb.append("}");
+        return sb.toString();
+    }
+  
     private static String toCamelCase(String input) {
         StringBuilder sb = new StringBuilder();
         boolean capitalize = true;
@@ -85,6 +106,11 @@ public class PageFactoryGenerator {
             }
         }
         return sb.toString();
+    }
+    
+    private static String toCamelCaseFirstLower(String input) {
+        String camelCase = toCamelCase(input);
+        return camelCase.substring(0, 1).toLowerCase() + camelCase.substring(1);
     }
 }
 

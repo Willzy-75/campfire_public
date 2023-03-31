@@ -56,8 +56,12 @@ public class PageFactoryControllerJpa {
 	    FileUtils.writeStringToFile(pageFactoryFile, pageFactoryCode, StandardCharsets.UTF_8);
 
 	    String baseControllerCode = PageFactoryGenerator.generateBaseController(packageName);
-	    File baseControllerFile = new File(outputDirectory, "BasePage.java");
+	    File baseControllerFile = new File(outputDirectory, "BaseController.java");
 	    FileUtils.writeStringToFile(baseControllerFile, baseControllerCode, StandardCharsets.UTF_8);
+
+	    String pageControllerCode = PageFactoryGenerator.generatePageController(packageName, name, ids);
+	    File pageControllerFile = new File(outputDirectory, name + "Controller.java");
+	    FileUtils.writeStringToFile(pageControllerFile, pageControllerCode, StandardCharsets.UTF_8);
 
 	    ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(pageFactoryFile));
 	    HttpHeaders headers = new HttpHeaders();
@@ -68,8 +72,6 @@ public class PageFactoryControllerJpa {
 	            .contentLength(resource.contentLength())
 	            .body(resource);
 	}
-
-
     
 	@GetMapping("/generate-page-factory")
 	public String showGeneratePageFactoryForm(ModelMap model) {
