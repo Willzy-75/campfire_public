@@ -52,17 +52,23 @@ public class PageFactoryControllerJpa {
 	    List<String> ids = scrapingService.scrapeIdsFromUrl(url);
 	    String pageFactoryCode = PageFactoryGenerator.generatePageFactory(ids, packageName, name);
 
-	    File file = new File(outputDirectory, name + ".java"); // Add ".java" to the name of the output file
-	    FileUtils.writeStringToFile(file, pageFactoryCode, StandardCharsets.UTF_8);
-	    ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(file));
+	    File pageFactoryFile = new File(outputDirectory, name + ".java");
+	    FileUtils.writeStringToFile(pageFactoryFile, pageFactoryCode, StandardCharsets.UTF_8);
+
+	    String baseControllerCode = PageFactoryGenerator.generateBaseController(packageName);
+	    File baseControllerFile = new File(outputDirectory, "BasePage.java");
+	    FileUtils.writeStringToFile(baseControllerFile, baseControllerCode, StandardCharsets.UTF_8);
+
+	    ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(pageFactoryFile));
 	    HttpHeaders headers = new HttpHeaders();
-	    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".java"); // Add ".java" to the name of the output file
+	    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".java");
 	    headers.add(HttpHeaders.CONTENT_TYPE, "text/plain");
 	    return ResponseEntity.ok()
 	            .headers(headers)
 	            .contentLength(resource.contentLength())
 	            .body(resource);
 	}
+
 
     
 	@GetMapping("/generate-page-factory")
