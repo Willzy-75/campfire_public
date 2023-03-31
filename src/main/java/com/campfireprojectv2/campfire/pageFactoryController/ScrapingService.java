@@ -1,8 +1,8 @@
 package com.campfireprojectv2.campfire.pageFactoryController;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ScrapingService {
 
-    public List<String> scrapeIdsFromUrl(String url) throws IOException {
-        List<String> ids = new ArrayList<>();
+    public Set<String> scrapeIdsFromUrl(String url) throws IOException {
+        Set<String> ids = new LinkedHashSet<>();
 
         try {
             if (!url.startsWith("http://") && !url.startsWith("https://")) {
@@ -31,6 +31,8 @@ public class ScrapingService {
 
         return ids;
     }
+    
+
 }
 
 

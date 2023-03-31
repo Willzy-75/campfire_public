@@ -1,10 +1,10 @@
 package com.campfireprojectv2.campfire.pageFactoryController;
 
-import java.util.List;
+import java.util.Set;
 
 public class PageFactoryGenerator {
 
-    public static String generatePageFactory(List<String> ids, String packageName, String filename) {
+    public static String generatePageFactory(Set<String> ids, String packageName, String filename) {
         StringBuilder sb = new StringBuilder();
         sb.append("package ").append(packageName).append(";\n\n");
         sb.append("import org.openqa.selenium.WebElement;\n");
@@ -14,7 +14,7 @@ public class PageFactoryGenerator {
         // Generate the instance variables and FindBy annotations
         for (String id : ids) {
             sb.append("    @FindBy(id = \"").append(id).append("\")\n");
-            sb.append("    private WebElement ").append(id).append(";\n\n");
+            sb.append("    private WebElement ").append(removeHyphens(id)).append(";\n\n");
         }
 
         sb.append("    public ").append(filename).append("() {\n");
@@ -22,9 +22,9 @@ public class PageFactoryGenerator {
 
        
         for (String id : ids) {
-            String idCamelCase = toCamelCase(id);
+        	String idCamelCase = toCamelCase(id);
             sb.append("    public WebElement get").append(idCamelCase).append("() {\n");
-            sb.append("        return ").append(id).append(";\n");
+            sb.append("        return ").append(removeHyphens(id)).append(";\n");
             sb.append("    }\n\n");
         }
 
@@ -38,7 +38,6 @@ public class PageFactoryGenerator {
                 + "import org.openqa.selenium.WebDriver;\n"
                 + "import org.openqa.selenium.WebElement;\n"
                 + "import org.testng.annotations.AfterClass;\n"
-                + "import org.testng.annotations.BeforeClass;\n"
                 + "import org.testng.Reporter;\n"
                 + "import org.openqa.selenium.chrome.ChromeDriver;\n\n"
                 + "public class BaseController {\n"
@@ -62,9 +61,8 @@ public class PageFactoryGenerator {
                 + "}\n";
     }
     
-    public static String generatePageController(String packageName, String name, List<String> ids) {
+    public static String generatePageController(String packageName, String name, Set<String> ids) {
         String className = name + "Controller";
-        String nameCamelCase = toCamelCase(name);
         String nameCamelCaseFirstLower = toCamelCaseFirstLower(name);
         
         StringBuilder sb = new StringBuilder();
@@ -79,10 +77,10 @@ public class PageFactoryGenerator {
         sb.append("    }\n\n");
         
         for (String id : ids) {
-            String idCamelCase = toCamelCase(id);
+            String idCamelCase = toCamelCase(removeHyphens(id));
 
             sb.append("    public void click").append(idCamelCase).append("() {\n");
-            sb.append("        clickElement(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase).append("());\n");
+            sb.append("        clickButton(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase).append("());\n");
             sb.append("    }\n\n");
 
             sb.append("    public void enter").append(idCamelCase).append("(String value) {\n");
@@ -111,6 +109,29 @@ public class PageFactoryGenerator {
     private static String toCamelCaseFirstLower(String input) {
         String camelCase = toCamelCase(input);
         return camelCase.substring(0, 1).toLowerCase() + camelCase.substring(1);
+    }
+    
+    // issue with hyphens in the ids... this method removes them
+    private static String removeHyphens(String input) {
+        StringBuilder sb = new StringBuilder();
+        boolean capitalizeNext = false;
+
+        for (int i = 0; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+
+            if (currentChar == '-') {
+                capitalizeNext = true;
+            } else {
+                if (capitalizeNext) {
+                    sb.append(Character.toUpperCase(currentChar));
+                    capitalizeNext = false;
+                } else {
+                    sb.append(currentChar);
+                }
+            }
+        }
+
+        return sb.toString();
     }
 }
 

@@ -24,6 +24,12 @@
       <label for="outputDirectory" class="form-label">Output Directory</label>
       <input type="text" name="outputDirectory" required="required" class="form-control" id="outputDirectory" />
     </div>
+    
+    <div class="col-md-6">
+	    <label for="baseControllerNeeded" class="form-check-label">Base Controller Needed?</label>
+	    <input type="checkbox" name="baseControllerNeeded" class="form-check-input" id="baseControllerNeeded" />
+	</div>
+    
 
     <div class="col-12">
       <input type="submit" class="btn btn-success" value="Submit">

@@ -3,11 +3,11 @@ package com.campfireprojectv2.campfire.pageFactoryController;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Set;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +15,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -30,34 +27,24 @@ public class PageFactoryControllerJpa {
     @Autowired
     private ScrapingService scrapingService;
     
-    private PageFactoryRepository pageFactoryRepository;
-    
-    public PageFactoryControllerJpa(PageFactoryRepository pageFactoryRepository) {
-    	super();
-    	this.pageFactoryRepository = pageFactoryRepository;
-    }
-    
-	private String getLoggedInUsername(ModelMap model) {
-		Authentication authentication = 
-				SecurityContextHolder.getContext().getAuthentication();
-		return authentication.getName();
-	}
-    
 	@RequestMapping(value = "/generatePageFactory", method = RequestMethod.POST)
 	public ResponseEntity<Resource> generatePageFactory(
 	        @RequestParam String url,
 	        @RequestParam String packageName,
 	        @RequestParam String name,
-	        @RequestParam String outputDirectory) throws IOException {
-	    List<String> ids = scrapingService.scrapeIdsFromUrl(url);
+	        @RequestParam String outputDirectory,
+	        @RequestParam(value = "baseControllerNeeded", required = false) boolean baseControllerNeeded) throws IOException {
+	    Set<String> ids = scrapingService.scrapeIdsFromUrl(url);
 	    String pageFactoryCode = PageFactoryGenerator.generatePageFactory(ids, packageName, name);
 
 	    File pageFactoryFile = new File(outputDirectory, name + ".java");
 	    FileUtils.writeStringToFile(pageFactoryFile, pageFactoryCode, StandardCharsets.UTF_8);
 
-	    String baseControllerCode = PageFactoryGenerator.generateBaseController(packageName);
-	    File baseControllerFile = new File(outputDirectory, "BaseController.java");
-	    FileUtils.writeStringToFile(baseControllerFile, baseControllerCode, StandardCharsets.UTF_8);
+	    if (baseControllerNeeded) {
+	        String baseControllerCode = PageFactoryGenerator.generateBaseController(packageName);
+	        File baseControllerFile = new File(outputDirectory, "BaseController.java");
+	        FileUtils.writeStringToFile(baseControllerFile, baseControllerCode, StandardCharsets.UTF_8);
+	    }
 
 	    String pageControllerCode = PageFactoryGenerator.generatePageController(packageName, name, ids);
 	    File pageControllerFile = new File(outputDirectory, name + "Controller.java");
