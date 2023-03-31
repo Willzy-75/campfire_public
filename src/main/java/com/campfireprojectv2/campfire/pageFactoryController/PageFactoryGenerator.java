@@ -14,7 +14,7 @@ public class PageFactoryGenerator {
         // Generate the instance variables and FindBy annotations
         for (String id : ids) {
             sb.append("    @FindBy(id = \"").append(id).append("\")\n");
-            sb.append("    private WebElement ").append(removeHyphens(id)).append(";\n\n");
+            sb.append("    private WebElement ").append(drainDreck(id)).append(";\n\n");
         }
 
         sb.append("    public ").append(filename).append("() {\n");
@@ -24,7 +24,7 @@ public class PageFactoryGenerator {
         for (String id : ids) {
         	String idCamelCase = toCamelCase(id);
             sb.append("    public WebElement get").append(idCamelCase).append("() {\n");
-            sb.append("        return ").append(removeHyphens(id)).append(";\n");
+            sb.append("        return ").append(drainDreck(id)).append(";\n");
             sb.append("    }\n\n");
         }
 
@@ -77,7 +77,7 @@ public class PageFactoryGenerator {
         sb.append("    }\n\n");
         
         for (String id : ids) {
-            String idCamelCase = toCamelCase(removeHyphens(id));
+            String idCamelCase = toCamelCase(drainDreck(id));
 
             sb.append("    public void click").append(idCamelCase).append("() {\n");
             sb.append("        clickButton(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase).append("());\n");
@@ -111,15 +111,15 @@ public class PageFactoryGenerator {
         return camelCase.substring(0, 1).toLowerCase() + camelCase.substring(1);
     }
     
-    // issue with hyphens in the ids... this method removes them
-    private static String removeHyphens(String input) {
+    // issue with hyphens/colons in the ids... this method removes them
+    private static String drainDreck(String input) {
         StringBuilder sb = new StringBuilder();
         boolean capitalizeNext = false;
 
         for (int i = 0; i < input.length(); i++) {
             char currentChar = input.charAt(i);
 
-            if (currentChar == '-') {
+            if (currentChar == '-' || currentChar == ':') {
                 capitalizeNext = true;
             } else {
                 if (capitalizeNext) {
