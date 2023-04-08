@@ -2,8 +2,8 @@
 <%@ include file="common/navigation_client.jspf"%>
 
 <div class="container">
-  <h1 class="text_color">Generate Page Factory:</h1>
-  <form method="post" action="/generatePageFactory" enctype="multipart/form-data" class="row g-3">
+  <h1 class="text_color">Generate Test Suite:</h1>
+  <form method="post" action="/generateTestSuite" enctype="multipart/form-data" class="row g-3">
 
     <div class="col-md-6">
       <label for="name" class="form-label">Name</label>

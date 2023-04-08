@@ -2,7 +2,7 @@
 <%@ include file="common/navigation_client.jspf"%>
 
 <div class="container">
-  <h1 class="text_color">Page Factory:</h1>
+  <h1 class="text_color">Test Suite:</h1>
   <form:form method="post" modelAttribute="pageFactory" class="row g-3">
 
     <div class="col-md-6">

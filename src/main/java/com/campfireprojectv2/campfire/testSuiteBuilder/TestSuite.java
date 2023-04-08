@@ -1,11 +1,11 @@
-package com.campfireprojectv2.campfire.pageFactoryController;
+package com.campfireprojectv2.campfire.testSuiteBuilder;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-public class PageFactory {
+public class TestSuite {
 
 	@Id
 	@GeneratedValue
@@ -16,11 +16,11 @@ public class PageFactory {
 	private String name;
 	private String outputDirectory;
 	
-	public PageFactory() {
+	public TestSuite() {
 		
 	}
 
-	public PageFactory(int id, String url, String packageName, String name, String outputDirectory) {
+	public TestSuite(int id, String url, String packageName, String name, String outputDirectory) {
 		super();
 		this.id = id;
 		this.url = url;

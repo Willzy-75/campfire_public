@@ -7,7 +7,7 @@
 			<li class="nav-item"><a class="nav-link" href="/list-users">Users</a></li>
 			<li class="nav-item"><a class="nav-link" href="/list-user-story">User Stories</a></li>
 			<li class="nav-item"><a class="nav-link" href="/list-id-scraper">URL ID Scraper</a></li>
-			<li class="nav-item"><a class="nav-link" href="/generate-page-factory">Page Factory Creator</a></li>
+			<li class="nav-item"><a class="nav-link" href="/generate-test-suite">Test Suite Creator</a></li>
 		</ul>
 	</div>
 	<ul class="navbar-nav">

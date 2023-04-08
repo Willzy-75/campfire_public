@@ -1,4 +1,4 @@
-package com.campfireprojectv2.campfire.pageFactoryController;
+package com.campfireprojectv2.campfire.testSuiteBuilder;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;

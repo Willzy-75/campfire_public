@@ -1,10 +1,10 @@
-package com.campfireprojectv2.campfire.pageFactoryController;
+package com.campfireprojectv2.campfire.testSuiteBuilder;
 
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PageFactoryGenerator {
+public class TestSuiteGenerator {
 
     public static String generatePageFactory(Set<String> ids, String packageName, String filename) {
         StringBuilder sb = new StringBuilder();
