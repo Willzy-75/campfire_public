@@ -1,6 +1,7 @@
 package com.campfireprojectv2.campfire.pageFactoryController;
 
 import java.util.Set;
+import java.io.File;
 
 public class PageFactoryGenerator {
 
@@ -60,6 +61,41 @@ public class PageFactoryGenerator {
                 + "    }\n"
                 + "}\n";
     }
+    
+    public static String generateTestClass(String packageName, String pageClassName, String outputDirectory, String testUrl) {
+        StringBuilder sb = new StringBuilder();
+        String pageClassInstanceName = toCamelCaseFirstLower(pageClassName);
+        
+        sb.append("package ").append(packageName).append(";\n\n");
+        sb.append("import org.openqa.selenium.WebDriver;\n");
+        sb.append("import org.openqa.selenium.chrome.ChromeDriver;\n");
+        sb.append("import org.testng.annotations.AfterMethod;\n");
+        sb.append("import org.testng.annotations.BeforeMethod;\n");
+        sb.append("import org.testng.annotations.Test;\n\n");
+        sb.append("public class ").append(pageClassName).append("Test {\n\n");
+        sb.append("    private WebDriver driver;\n");
+        sb.append("    private ").append(pageClassName).append("Controller controller;\n\n");
+        sb.append("    @BeforeClass\n");
+        sb.append("    public void setUp() {\n");
+        sb.append("        System.setProperty(\"webdriver.chrome.driver\", \"").append(outputDirectory.replace("\\", "/")).append("/chromedriver.exe\");\n");
+        sb.append("        driver = new ChromeDriver();\n");
+        sb.append("        driver.manage().window().maximize();\n");
+        sb.append("        driver.get(\"").append(testUrl).append("\");\n");
+        sb.append("        ").append(pageClassInstanceName).append(" = new ").append(pageClassName).append("(driver);\n");
+        sb.append("    }\n\n");
+        sb.append("    @Test\n");
+        sb.append("    public void test() {\n");
+        sb.append("        // Put methods here.\n");
+        sb.append("    }\n\n");
+        sb.append("    @AfterMethod\n");
+        sb.append("    public void tearDown() {\n");
+        sb.append("        driver.quit();\n");
+        sb.append("    }\n");
+        sb.append("}\n");
+
+        return sb.toString();
+    }
+
     
     public static String generatePageController(String packageName, String name, Set<String> ids) {
         String className = name + "Controller";

@@ -27,38 +27,47 @@ public class PageFactoryControllerJpa {
     @Autowired
     private ScrapingService scrapingService;
     
-	@RequestMapping(value = "/generatePageFactory", method = RequestMethod.POST)
-	public ResponseEntity<Resource> generatePageFactory(
-	        @RequestParam String url,
-	        @RequestParam String packageName,
-	        @RequestParam String name,
-	        @RequestParam String outputDirectory,
-	        @RequestParam(value = "baseControllerNeeded", required = false) boolean baseControllerNeeded) throws IOException {
-	    Set<String> ids = scrapingService.scrapeIdsFromUrl(url);
-	    String pageFactoryCode = PageFactoryGenerator.generatePageFactory(ids, packageName, name);
 
-	    File pageFactoryFile = new File(outputDirectory, name + ".java");
-	    FileUtils.writeStringToFile(pageFactoryFile, pageFactoryCode, StandardCharsets.UTF_8);
+    @RequestMapping(value = "/generatePageFactory", method = RequestMethod.POST)
+    public ResponseEntity<Resource> generatePageFactory(
+            @RequestParam String url,
+            @RequestParam String packageName,
+            @RequestParam String name,
+            @RequestParam String outputDirectory,
+            @RequestParam(value = "baseControllerNeeded", required = false) boolean baseControllerNeeded) throws IOException {
+        Set<String> ids = scrapingService.scrapeIdsFromUrl(url);
+        String pageFactoryCode = PageFactoryGenerator.generatePageFactory(ids, packageName, name);
 
-	    if (baseControllerNeeded) {
-	        String baseControllerCode = PageFactoryGenerator.generateBaseController(packageName);
-	        File baseControllerFile = new File(outputDirectory, "BaseController.java");
-	        FileUtils.writeStringToFile(baseControllerFile, baseControllerCode, StandardCharsets.UTF_8);
-	    }
+        File pageFactoryFile = new File(outputDirectory, name + ".java");
+        FileUtils.writeStringToFile(pageFactoryFile, pageFactoryCode, StandardCharsets.UTF_8);
 
-	    String pageControllerCode = PageFactoryGenerator.generatePageController(packageName, name, ids);
-	    File pageControllerFile = new File(outputDirectory, name + "Controller.java");
-	    FileUtils.writeStringToFile(pageControllerFile, pageControllerCode, StandardCharsets.UTF_8);
+        if (baseControllerNeeded) {
+            String baseControllerCode = PageFactoryGenerator.generateBaseController(packageName);
+            File baseControllerFile = new File(outputDirectory, "BaseController.java");
+            FileUtils.writeStringToFile(baseControllerFile, baseControllerCode, StandardCharsets.UTF_8);
+        }
 
-	    ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(pageFactoryFile));
-	    HttpHeaders headers = new HttpHeaders();
-	    headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".java");
-	    headers.add(HttpHeaders.CONTENT_TYPE, "text/plain");
-	    return ResponseEntity.ok()
-	            .headers(headers)
-	            .contentLength(resource.contentLength())
-	            .body(resource);
-	}
+        String pageControllerCode = PageFactoryGenerator.generatePageController(packageName, name, ids);
+        File pageControllerFile = new File(outputDirectory, name + "Controller.java");
+        FileUtils.writeStringToFile(pageControllerFile, pageControllerCode, StandardCharsets.UTF_8);
+
+        String testClassName = name + "Test";
+        String testClassContent = PageFactoryGenerator.generateTestClass(packageName, name, outputDirectory, url);
+
+        File testClassFile = new File(outputDirectory, testClassName + ".java");
+        FileUtils.writeStringToFile(testClassFile, testClassContent, StandardCharsets.UTF_8);
+
+        ByteArrayResource resource = new ByteArrayResource(FileUtils.readFileToByteArray(pageFactoryFile));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".java");
+        headers.add(HttpHeaders.CONTENT_TYPE, "text/plain");
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentLength(resource.contentLength())
+                .body(resource);
+    }
+
+
     
 	@GetMapping("/generate-page-factory")
 	public String showGeneratePageFactoryForm(ModelMap model) {
