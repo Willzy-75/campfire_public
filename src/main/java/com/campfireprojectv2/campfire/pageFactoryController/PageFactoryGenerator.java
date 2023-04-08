@@ -1,7 +1,8 @@
 package com.campfireprojectv2.campfire.pageFactoryController;
 
 import java.util.Set;
-import java.io.File;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PageFactoryGenerator {
 
@@ -62,6 +63,15 @@ public class PageFactoryGenerator {
                 + "}\n";
     }
     
+    /**
+     * Method to generate the generic Test Class, note that the Chromedriver.exe file must be 
+     * added to the folder where the files are located for the test to work
+     * @param packageName
+     * @param pageClassName
+     * @param outputDirectory
+     * @param testUrl
+     * @return
+     */
     public static String generateTestClass(String packageName, String pageClassName, String outputDirectory, String testUrl) {
         StringBuilder sb = new StringBuilder();
         String pageClassInstanceName = toCamelCaseFirstLower(pageClassName);
@@ -97,6 +107,13 @@ public class PageFactoryGenerator {
     }
 
     
+    /**
+     * Method to generate the PageController
+     * @param packageName
+     * @param name
+     * @param ids
+     * @return
+     */
     public static String generatePageController(String packageName, String name, Set<String> ids) {
         String className = name + "Controller";
         String nameCamelCaseFirstLower = toCamelCaseFirstLower(name);
@@ -147,27 +164,69 @@ public class PageFactoryGenerator {
         return camelCase.substring(0, 1).toLowerCase() + camelCase.substring(1);
     }
     
-    // issue with hyphens/colons in the ids... this method removes them
+   
+    /**
+     * issue with special characters in the id... this method removes them, capitalizing
+     * the next letter; also runs a check to ensure the first character is not a number;
+     * method basically removes any 'dreck' using REGEX pattern matching and sanitizing 
+     * it to be able to be used as a Java variable in the resulting files
+     * 
+     * @param input
+     * @return
+     */
     private static String drainDreck(String input) {
         StringBuilder sb = new StringBuilder();
-        boolean capitalizeNext = false;
+        Pattern pattern = Pattern.compile("([^a-zA-Z0-9]+)([a-zA-Z0-9])?");
+        Matcher matcher = pattern.matcher(input);
 
-        for (int i = 0; i < input.length(); i++) {
-            char currentChar = input.charAt(i);
-
-            if (currentChar == '-' || currentChar == ':') {
-                capitalizeNext = true;
+        boolean first = true;
+        while (matcher.find()) {
+            if (first) {
+                matcher.appendReplacement(sb, "");
+                first = false;
             } else {
-                if (capitalizeNext) {
-                    sb.append(Character.toUpperCase(currentChar));
-                    capitalizeNext = false;
+                String nextChar = matcher.group(2);
+                if (nextChar != null) {
+                    matcher.appendReplacement(sb, nextChar.toUpperCase());
                 } else {
-                    sb.append(currentChar);
+                    matcher.appendReplacement(sb, "");
                 }
             }
         }
+        matcher.appendTail(sb);
+
+        if (Character.isDigit(sb.charAt(0))) {
+            sb.replace(0, 1, digitToWord(sb.charAt(0)));
+        }
 
         return sb.toString();
+    }
+    
+    private static String digitToWord(char digit) {
+        switch (digit) {
+            case '0':
+                return "zero";
+            case '1':
+                return "one";
+            case '2':
+                return "two";
+            case '3':
+                return "three";
+            case '4':
+                return "four";
+            case '5':
+                return "five";
+            case '6':
+                return "six";
+            case '7':
+                return "seven";
+            case '8':
+                return "eight";
+            case '9':
+                return "nine";
+            default:
+                return "";
+        }
     }
 }
 
