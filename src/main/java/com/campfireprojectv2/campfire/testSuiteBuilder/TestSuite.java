@@ -1,5 +1,7 @@
 package com.campfireprojectv2.campfire.testSuiteBuilder;
 
+import java.util.Objects;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -10,23 +12,26 @@ public class TestSuite {
 	@Id
 	@GeneratedValue
 	private int id;
-	
+
 	private String url;
 	private String packageName;
 	private String name;
 	private String outputDirectory;
-	
+
 	public TestSuite() {
-		
+
 	}
 
-	public TestSuite(int id, String url, String packageName, String name, String outputDirectory) {
+	// ITEC-445:
+	// Added checks to ensure all values are non-null before instantiating TestSuite object.
+	// OBJ11-J be wary of letting constructors throw exceptions. 
+	public TestSuite(Integer id, String url, String packageName, String name, String outputDirectory) {
 		super();
-		this.id = id;
-		this.url = url;
-		this.packageName = packageName;
-		this.name = name;
-		this.outputDirectory = outputDirectory;
+		this.id = Objects.requireNonNull(id, "id must not be null");
+		this.url = Objects.requireNonNull(url, "url must not be null");
+		this.packageName = Objects.requireNonNull(packageName, "packageName must not be null");
+		this.name = Objects.requireNonNull(name, "name must not be null");
+		this.outputDirectory = Objects.requireNonNull(outputDirectory, "outputDirectory must not be null");
 	}
 
 	@Override
@@ -35,44 +40,32 @@ public class TestSuite {
 				+ ", outputDirectory=" + outputDirectory + "]";
 	}
 
+	// ITEC-445:
+	// Removed setters since there is never a reason to set these variables as they are only pulled from 
+	// the url provided by the user. Under no circumstances are the values ever set by the application 
+	// except through instantiation of the class as a whole.
+	// MSC56-J detect and remove superfluous code and values.
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getUrl() {
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
 	public String getPackageName() {
 		return packageName;
 	}
 
-	public void setPackageName(String packageName) {
-		this.packageName = packageName;
-	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getOutputDirectory() {
 		return outputDirectory;
 	}
 
-	public void setOutputDirectory(String outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
-		
+
 }
