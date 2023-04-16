@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="common/header.jspf" %>
-<%@ include file="common/navigation.jspf" %>
+<%@ include file="common/navigation_client.jspf"%>
 		
 <div class="container">
 	<h1 class="text_color">The Users are:</h1>
@@ -31,7 +31,6 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="add-user" class="btn btn-success">Add User</a>
 </div>
 		
 <%@ include file="common/footer.jspf" %>

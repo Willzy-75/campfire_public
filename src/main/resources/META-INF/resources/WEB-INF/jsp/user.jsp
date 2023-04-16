@@ -1,5 +1,5 @@
 <th class="text_color">Why</th><%@ include file="common/header.jspf" %>
-<%@ include file="common/navigation.jspf" %>
+<%@ include file="common/navigation_client.jspf"%>
 
 <div class="container">
 		<h1 class="text_color">Enter User Details:</h1>

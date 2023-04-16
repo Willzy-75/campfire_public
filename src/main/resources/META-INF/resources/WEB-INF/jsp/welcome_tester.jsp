@@ -4,27 +4,27 @@
 <html>
 	<head>
 		<link href="webjars/bootstrap/5.2.3/css/bootstrap.min.css" rel="stylesheet">
-		<link href="webjars/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css">
-		<title>Software Testing Page</title>
+		<title>Campfire</title>
+		<style>
+		  	.text_color {
+	      		color: green;
+	    	}
+	    	body {
+	    		background-color: white;
+	    	}
+		</style>
 	</head>
 	
-	<body style="
-		background-image: url('Campfire.jpeg');
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-attachment: fixed;"
-	>
-		<%@ include file="common/navigation.jspf" %>
+	<body>
+		<%@ include file="common/navigation_client.jspf" %>
 		<div class="container">
-			<style>
-			  	.container {
-	      	color: coral;
-	    	}
-  			</style>
-			<div><h1>Welcome to Campfire Stories, Tester!</h1></div>
-
-			<div><a href="list-todos">Manage</a> your to-do's.</div>
-			<div><a href="list-users">Manage</a> your users</div>
+			<h1 class="text_color">Welcome to Campfire Stories, Tester!</h1>
+			<hr>
+			<div><a href="list-todos" class="text_color">Manage</a> your to-do's.</div>
+			<div><a href="list-users" class="text_color">View</a> users</div>
+			<div><a href="list-user-story" class="text_color">Manage</a> your user stories</div>
+			<div><a href="list-id-scraper" class="text_color">Manage</a> your id scrapers</div>
+			<div><a href="generate-test-suite" class="text_color">Generate</a> a test suite</div>
 		</div>
 		<script src="webjars/bootstrap/5.2.3/js/bootstrap.min.js"></script>
 		<script src="webjars/jquery/3.6.3/jquery.min.js"></script>
