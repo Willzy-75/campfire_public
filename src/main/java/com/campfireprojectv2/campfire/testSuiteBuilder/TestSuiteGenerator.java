@@ -1,45 +1,52 @@
 package com.campfireprojectv2.campfire.testSuiteBuilder;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * ITEC-445 Changes:
- * 1. OBJ51-J. Minimize the accessibility of classes and their members
- * 2. Use StringBuilder for concatenating Strings in a loop (STR02-J) in the
- * toCamelCase method. This was implemented on each of the helper methods.
- * 
- * @author willm
- *
- */
 public class TestSuiteGenerator {
 
-	// Change 1: OBJ51-J. Minimize the accessibility of classes and their members
+	// ITEC-445: OBJ51-J. Minimize the accessibility of classes and their members, changed 
+	// no arg constructor to private, since there is never a reason to instantiate it publicly
+	/**
+	 * 
+	 */
 	private TestSuiteGenerator() {
 		// Prevent instantiation
 	}
-
+	
+	
+	/**
+	 * @param ids
+	 * @param packageName
+	 * @param filename
+	 * @return
+	 */
 	public static String generatePageFactory(Set<String> ids, String packageName, String filename) {
 		StringBuilder sb = new StringBuilder();
+		filename = toCamelCase(filename);
+		packageName = firstLetterLower(toCamelCase(packageName));
+		// map using key value pairs of dirty:clean ids
+		Map<String, String> sanitized = drainDreck(ids);
 		sb.append("package ").append(packageName).append(";\n\n");
 		sb.append("import org.openqa.selenium.WebElement;\n");
 		sb.append("import org.openqa.selenium.support.FindBy;\n\n");
 		sb.append("public class ").append(filename).append(" {\n\n");
 
-		// Generate the instance variables and FindBy annotations
-		for (String id : ids) {
-			sb.append("    @FindBy(id = \"").append(id).append("\")\n");
-			sb.append("    private WebElement ").append(drainDreck(id)).append(";\n\n");
+		for (Map.Entry<String,String> entry : sanitized.entrySet()) {
+			sb.append("    @FindBy(id = \"").append(entry.getKey()).append("\")\n");
+			sb.append("    private WebElement ").append(firstLetterLower(entry.getValue())).append(";\n\n");
 		}
 
 		sb.append("    public ").append(filename).append("() {\n");
+		sb.append("        super();\n");
 		sb.append("    }\n\n");
 
-		for (String id : ids) {
-			String idCamelCase = toCamelCase(id);
-			sb.append("    public WebElement get").append(idCamelCase).append("() {\n");
-			sb.append("        return ").append(drainDreck(id)).append(";\n");
+		for (Map.Entry<String,String> entry : sanitized.entrySet()) {
+			sb.append("    public WebElement get").append(entry.getValue()).append("() {\n");
+			sb.append("        return ").append(firstLetterLower(entry.getValue())).append(";\n");
 			sb.append("    }\n\n");
 		}
 
@@ -47,7 +54,12 @@ public class TestSuiteGenerator {
 		return sb.toString();
 	}
 
+	/**
+	 * @param packageName
+	 * @return
+	 */
 	public static String generateBaseController(String packageName) {
+		packageName = firstLetterLower(toCamelCase(packageName));
 		return "package " + packageName + ";\n\n" + "import org.openqa.selenium.By;\n"
 				+ "import org.openqa.selenium.WebDriver;\n" + "import org.openqa.selenium.WebElement;\n"
 				+ "import org.testng.annotations.AfterClass;\n" + "import org.testng.Reporter;\n"
@@ -74,8 +86,11 @@ public class TestSuiteGenerator {
 	 */
 	public static String generateTestClass(String packageName, String pageClassName, String outputDirectory,
 			String testUrl) {
+		pageClassName = toCamelCase(pageClassName);
+		packageName = firstLetterLower(toCamelCase(packageName));
+		
 		StringBuilder sb = new StringBuilder();
-		String pageClassInstanceName = toCamelCaseFirstLower(pageClassName);
+		String pageClassInstanceName = firstLetterLower(pageClassName);
 
 		sb.append("package ").append(packageName).append(";\n\n");
 		sb.append("import org.openqa.selenium.WebDriver;\n");
@@ -118,30 +133,35 @@ public class TestSuiteGenerator {
 	 * @return
 	 */
 	public static String generatePageController(String packageName, String name, Set<String> ids) {
+		name = toCamelCase(name);
+		packageName = firstLetterLower(toCamelCase(packageName));
+		
 		String className = name + "Controller";
-		String nameCamelCaseFirstLower = toCamelCaseFirstLower(name);
+		
+		String firstLetter = firstLetterLower(name);
+		Map<String, String> sanitized = drainDreck(ids);
 
 		StringBuilder sb = new StringBuilder();
+		
 		sb.append("package ").append(packageName).append(";\n\n");
 		sb.append("import org.openqa.selenium.WebElement;\n\n");
 		sb.append("public class ").append(className).append(" extends BaseController {\n\n");
-		sb.append("    private ").append(name).append(" ").append(nameCamelCaseFirstLower).append(";\n\n");
+		sb.append("    private ").append(name).append(" ").append(firstLetter).append(";\n\n");
 
 		sb.append("    public ").append(className).append("(WebDriver driver) {\n");
 		sb.append("        super(driver);\n");
-		sb.append("        this.").append(nameCamelCaseFirstLower).append(" = new ").append(name).append("(driver);\n");
+		sb.append("        this.").append(firstLetter).append(" = new ").append(name).append("(driver);\n");
 		sb.append("    }\n\n");
 
-		for (String id : ids) {
-			String idCamelCase = toCamelCase(drainDreck(id));
-
-			sb.append("    public void click").append(idCamelCase).append("() {\n");
-			sb.append("        clickButton(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase)
+		for (Map.Entry<String,String> entry : sanitized.entrySet()) {
+		
+			sb.append("    public void click").append(entry.getValue()).append("() {\n");
+			sb.append("        clickButton(").append(firstLetter).append(".get").append(entry.getValue())
 					.append("());\n");
 			sb.append("    }\n\n");
 
-			sb.append("    public void enter").append(idCamelCase).append("(String value) {\n");
-			sb.append("        enterText(").append(nameCamelCaseFirstLower).append(".get").append(idCamelCase)
+			sb.append("    public void enter").append(entry.getValue()).append("(String value) {\n");
+			sb.append("        enterText(").append(firstLetter).append(".get").append(entry.getValue())
 					.append("(), value);\n");
 			sb.append("    }\n\n");
 		}
@@ -150,71 +170,70 @@ public class TestSuiteGenerator {
 		return sb.toString();
 	}
 
-	// Change 2: Use StringBuilder for concatenating Strings in a loop (STR02-J)
-	private static String toCamelCase(String input) {
-		StringBuilder sb = new StringBuilder();
-		boolean capitalize = true;
-		for (char c : input.toCharArray()) {
-			if (c == '_' || c == '-') {
-				capitalize = true;
-			} else {
-				sb.append(capitalize ? Character.toUpperCase(c) : c);
-				capitalize = false;
-			}
-		}
-		return sb.toString();
-	}
 
-	// Change 2: Use StringBuilder for concatenating Strings in a loop (STR02-J)
-	private static String toCamelCaseFirstLower(String input) {
-		String camelCase = toCamelCase(input);
-		return camelCase.substring(0, 1).toLowerCase() + camelCase.substring(1);
+	private static String firstLetterLower(String input) {
+	    if (input == null || input.isEmpty()) {
+	        return input;
+	    }
+
+	    return input.substring(0, 1).toLowerCase() + input.substring(1);
+	}
+	
+	private static String toCamelCase(String input) {
+	    StringBuilder sb = new StringBuilder();
+	    boolean capitalize = false;
+	    for (char c : input.toCharArray()) {
+	        if (Character.isLetterOrDigit(c)) {
+	            sb.append(capitalize ? Character.toUpperCase(c) : c);
+	            capitalize = false;
+	        } else {
+	            capitalize = true;
+	        }
+	    }
+	    return sb.toString();
 	}
 
 	
-//	 ITEC-445:
-//	 Since this data is passed into a Selenium test as a Java Variable, the data should
+//	 ITEC-445:  STR02-C. Sanitize data passed to complex subsystems
+//	 Since this data is passed into a Selenium test as a Java variable, the data should
 //	 be sanitized to remove any special characters.
-//	 STR02-C. Sanitize data passed to complex subsystems
-	 
-	/** issue with special characters in the id... this method removes them,
+	/**
+	 * issue with special characters in the id... this method removes them,
 	 * capitalizing the next letter; also runs a check to ensure the first character
-	 * is not a number; method basically removes any 'dreck' using REGEX pattern
-	 * matching and sanitizing it to be able to be used as a Java variable in the
-	 * resulting files
+	 * is not a number
 	 * 
 	 * @param input
-	 * @return
-	 */
-	private static String drainDreck(String input) {
-		// Change 2: Use StringBuilder for concatenating Strings in a loop (STR02-J)
-		StringBuilder sb = new StringBuilder();
-		Pattern pattern = Pattern.compile("([^a-zA-Z0-9]+)([a-zA-Z0-9])?");
-		Matcher matcher = pattern.matcher(input);
+	 * @return Map<String, String> sanitized
+	 */	
+	private static Map<String, String> drainDreck(Set<String> input) {
+	    Map<String, String> sanitized = new HashMap<>();
+	    
+	    // ITEC-445 MSC06-J Do not modify the underlying collection while iteration is in progress
+	    // I changed this from an iterator to a for loop to avoid modifying the collection during 
+	    // iteration
+	    // creates a map of dirty/clean key/value pairs
+	    for (String dirty : input) {
+	    	// ITEC-445 IDS08-J Sanitize untrusted data included in a regular expression
+	    	// Originally this method used a REGEX and Pattern + Matcher to 'clean' the data,
+	    	// after review of this standard, I changed it to not used regular expressions,
+	    	// since the data is coming straight from the user
+	        String clean = toCamelCase(dirty);
+	        
+	        if (clean.length() > 0 && Character.isDigit(clean.charAt(0))) {
+	            clean = digitToWord(clean.charAt(0)) + clean.substring(1);
+	        }
+	        
+	        sanitized.put(dirty, clean);
+	    }
 
-		boolean first = true;
-		while (matcher.find()) {
-			if (first) {
-				matcher.appendReplacement(sb, "");
-				first = false;
-			} else {
-				String nextChar = matcher.group(2);
-				if (nextChar != null) {
-					matcher.appendReplacement(sb, nextChar.toUpperCase());
-				} else {
-					matcher.appendReplacement(sb, "");
-				}
-			}
-		}
-		matcher.appendTail(sb);
-
-		if (Character.isDigit(sb.charAt(0))) {
-			sb.replace(0, 1, digitToWord(sb.charAt(0)));
-		}
-
-		return sb.toString();
+	    return sanitized;
 	}
 
+	// ITEC-445 STR03-J Do not encode non-character data as string
+    // The following is used to ensure that numbers are spelled out,
+	// instead of encoded as a string - Note: in this case I have 
+	// only used it to ensure the first letter is not a number, 
+	// since the method that calls this is creating a Java variable
 	private static String digitToWord(char digit) {
 		switch (digit) {
 		case '0':

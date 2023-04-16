@@ -1,16 +1,12 @@
 package com.campfireprojectv2.campfire.todo;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Size;
-
-// this will be in a database: mySQL, Oracle, etc
-
-// JPA allows us to map the
-// Bean -> to a table in the Database
 
 @Entity
 public class Todo {
@@ -71,6 +67,8 @@ public class Todo {
 		this.description = description;
 	}
 
+	// ITEC-445 OBJ05-J Do not return references to private mutable class members
+	// Updated from Date to LocalDate to create an immutable class instead of using Date
 	public LocalDate getTargetDate() {
 		return targetDate;
 	}

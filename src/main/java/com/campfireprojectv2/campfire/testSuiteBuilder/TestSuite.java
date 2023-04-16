@@ -13,6 +13,7 @@ public class TestSuite {
 	@GeneratedValue
 	private int id;
 
+	// ITEC-445: OBJ01-J Limit accessibility of fields, made all member fields private
 	private String url;
 	private String packageName;
 	private String name;
@@ -22,9 +23,8 @@ public class TestSuite {
 
 	}
 
-	// ITEC-445:
-	// Added checks to ensure all values are non-null before instantiating TestSuite object.
-	// OBJ11-J be wary of letting constructors throw exceptions. 
+	// ITEC-445: OBJ11-J be wary of letting constructors throw exceptions.
+	// Added checks to ensure all values are non-null before instantiating TestSuite object. 
 	public TestSuite(Integer id, String url, String packageName, String name, String outputDirectory) {
 		super();
 		this.id = Objects.requireNonNull(id, "id must not be null");
@@ -40,11 +40,10 @@ public class TestSuite {
 				+ ", outputDirectory=" + outputDirectory + "]";
 	}
 
-	// ITEC-445:
+	// ITEC-445: MSC56-J detect and remove superfluous code and values.
 	// Removed setters since there is never a reason to set these variables as they are only pulled from 
 	// the url provided by the user. Under no circumstances are the values ever set by the application 
 	// except through instantiation of the class as a whole.
-	// MSC56-J detect and remove superfluous code and values.
 	public int getId() {
 		return id;
 	}
@@ -66,6 +65,4 @@ public class TestSuite {
 	public String getOutputDirectory() {
 		return outputDirectory;
 	}
-
-
 }

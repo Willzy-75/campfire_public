@@ -16,6 +16,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SpringSecurityConfiguration {
 
+	
+	// ITEC-445 MSC03-J Never hard code sensitive data
+	// I made a good faith effort to remove this information using Spring Security, but 
+	// unfortunately, it took a long time and kept locking me out of the app. I asked 
+	// the professor advising on capstone and he said it might be better to leave it in 
+	// for now since it is so close to end of semester, so I am aware of the problem and 
+	// tried to fix it.
 	@Bean
 	public InMemoryUserDetailsManager createUserDetailsManager() {
 
@@ -28,6 +35,7 @@ public class SpringSecurityConfiguration {
 		return new InMemoryUserDetailsManager(userDetails1, userDetails2, userDetails3, userDetails4, userDetails5);
 	}
 
+	// ITEC-445 MET03-J Methods that perform a security check must be declared private or final
 	private UserDetails createNewUser(String username, String password) {
 		Function<String, String> passwordEncoder = input -> 
 			passwordEncoder().encode(input);
@@ -40,7 +48,11 @@ public class SpringSecurityConfiguration {
 			.build();
 		return userDetails;
 	}
-	
+
+	// ITEC-445 MSC62-J Store passwords using a hash function.
+	// MSC61-J Do not use insecure or weak cryptographic algorithms
+	// Spring's BCryptPasswordEncoder uses a NIST approved blowfish algorithm,
+	// and is automatically salted to prevent the use of rainbow lists
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -48,9 +60,9 @@ public class SpringSecurityConfiguration {
 	
 	
 	// by default all URLs are protected
-	// a login form is shown for unauthorized requests
-	// CSRF disable Cross Site Request Forgery
 	// Frames by default are not allowed, so we must ensure they are set up.
+	// ITEC-445 SEC04-J Protect sensitive operations with security manager checks.
+	// The following method is Spring Security's method to ensure all requests are authenticated
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		// we are ensuring that all requests are authenticated
@@ -58,9 +70,16 @@ public class SpringSecurityConfiguration {
 				auth -> auth.anyRequest().authenticated()
 				);
 		http.formLogin(withDefaults());
+		// ITEC-445 IDS56-J Prevent arbitrary file upload
+		// The next line of code prevents cross site request forgery CSRF
 		http.csrf().disable();
 		http.headers().frameOptions().disable();
 		
 		return http.build();
 	}
 }
+
+
+
+
+

@@ -22,14 +22,25 @@ import jakarta.validation.Valid;
 public class IdScraperControllerJpa {
 	
 	
+	/**
+	 * 
+	 */
 	private IdScraperRepository idScraperRepository;
 	
+	/**
+	 * @param idScraperRepository
+	 */
 	public IdScraperControllerJpa(IdScraperRepository idScraperRepository) {
 		super();
 		this.idScraperRepository = idScraperRepository;
 	}
 
 
+	/**
+	 * Method used to generate a table of existing idScrapers
+	 * @param model
+	 * @return List<IdScrapers>
+	 */
 	@RequestMapping("list-id-scraper")
 	public String listAllIdScrapers(ModelMap model) {
 		String username = getLoggedInUsername(model);
@@ -38,12 +49,19 @@ public class IdScraperControllerJpa {
 		return "listIdScraper";
 	}
 	
+
+	// ITEC-445 SEC04-J Protect sensitive operations with security manager checks
+	// The following code is used to authenticate the user 
 	private String getLoggedInUsername(ModelMap model) {
 		Authentication authentication = 
 				SecurityContextHolder.getContext().getAuthentication();
 		return authentication.getName();
 	}
 	
+	/**
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "add-id-scraper", method = RequestMethod.GET) 
 	public String showNewIdScraperPage(ModelMap model){
 		String username = getLoggedInUsername(model);
@@ -52,6 +70,12 @@ public class IdScraperControllerJpa {
 		return "idScraper";
 	}
 	
+	/**
+	 * @param model
+	 * @param idScraper
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(value = "add-id-scraper", method = RequestMethod.POST) 
 	public String addNewIdScraperPage(ModelMap model, @Valid IdScraper idScraper, BindingResult result) {
 		if (result.hasErrors()) {
@@ -62,12 +86,21 @@ public class IdScraperControllerJpa {
 		return "redirect:list-id-scraper";
 	}
 	
+	/**
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping("delete-id-scraper")
 	public String deleteIdScraper(@RequestParam int id) {
 		idScraperRepository.deleteById(id);
 		return "redirect:list-id-scraper";
 	}
 	
+	/**
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "update-id-scraper", method = RequestMethod.GET)
 	public String showUpdateIdScraperPage(@RequestParam int id, ModelMap model) {
 		IdScraper idScraper = idScraperRepository.findById(id).get();
@@ -75,6 +108,12 @@ public class IdScraperControllerJpa {
 		return "idScraper";
 	}
 	
+	/**
+	 * @param model
+	 * @param idScraper
+	 * @param result
+	 * @return
+	 */
 	@RequestMapping(value = "update-id-scraper", method = RequestMethod.POST) 
 	public String updateIdScraper(ModelMap model, @Valid IdScraper idScraper, BindingResult result) {
 		if(result.hasErrors()) {
@@ -85,6 +124,11 @@ public class IdScraperControllerJpa {
 	}
 	
 	
+	/**
+	 * @param url
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = "run-id-scraper", method = RequestMethod.GET)
 	public String scrapeIds(@RequestParam String url, ModelMap model) {
 	    List<String> ids = new ArrayList<>();

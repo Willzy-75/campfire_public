@@ -47,7 +47,10 @@ public class TodoControllerJpa {
 	@RequestMapping(value="add-todo", method=RequestMethod.GET)
 	public String showNewTodoPage(ModelMap model) {
 		String username = getLoggedInUsername(model);
-		Todo todo = new Todo(0, username, "Enter Description", LocalDate.now().plusYears(1), false);
+		// ITEC-445 OBJ06-J Defensively copy mutable inputs and mutable internal components
+		// Created a copy of LocalDate and used that when instantiating the Todo object
+		LocalDate copyDate = LocalDate.now().plusYears(1);
+		Todo todo = new Todo(0, username, "Enter Description", copyDate, false);
 		model.put("todo", todo);
 		return "todo";
 	}

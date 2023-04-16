@@ -11,8 +11,9 @@ import jakarta.validation.Valid;
 
 @Service
 public class TodoService {
+	
 	private static List<Todo> todos = new ArrayList<Todo>();
-	private static int todosCount = 0;
+		private static int todosCount = 0;
 	
 	public List<Todo> findByUsername(String username) {
 		Predicate<? super Todo> predicate = todo -> 

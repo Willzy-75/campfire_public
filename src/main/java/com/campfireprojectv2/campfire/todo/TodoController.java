@@ -18,10 +18,10 @@ import jakarta.validation.Valid;
 @SessionAttributes("name")
 public class TodoController {
 
-	// create a class variable of a TodoService object
+
 	private TodoService todoService;
 	
-	// the constructor for the todoService
+
 	public TodoController(TodoService todoService) {
 		super();
 		this.todoService = todoService;
