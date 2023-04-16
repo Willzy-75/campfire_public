@@ -194,7 +194,7 @@ public class TestSuiteGenerator {
 	}
 
 	
-//	 ITEC-445:  STR02-C. Sanitize data passed to complex subsystems
+//	 ITEC-445:  SEC01-J Do not allow tainted variables in privileged blocks.
 //	 Since this data is passed into a Selenium test as a Java variable, the data should
 //	 be sanitized to remove any special characters.
 	/**
