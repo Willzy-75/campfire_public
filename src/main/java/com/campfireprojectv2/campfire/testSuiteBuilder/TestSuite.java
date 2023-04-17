@@ -13,7 +13,9 @@ public class TestSuite {
 	@GeneratedValue
 	private int id;
 
-	// ITEC-445: OBJ01-J Limit accessibility of fields, made all member fields private
+	// ITEC-445: OBJ01-J Limit accessibility of fields
+	// ensured all member fields in the project are private and only accessible using 
+	// public getters
 	private String url;
 	private String packageName;
 	private String name;

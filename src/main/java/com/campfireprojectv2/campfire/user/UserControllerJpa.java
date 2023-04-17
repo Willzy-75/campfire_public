@@ -33,7 +33,9 @@ public class UserControllerJpa {
 		
 		return "listUsers";
 	}
-
+	
+	// ITEC-445 SEC04-J Protect sensitive operations with security manager checks
+	// The following code is used to authenticate the user 
 	private String getLoggedInUsername(ModelMap model) {
 		Authentication authentication = 
 				SecurityContextHolder.getContext().getAuthentication();

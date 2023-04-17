@@ -20,7 +20,7 @@ public class SpringSecurityConfiguration {
 	// ITEC-445 MSC03-J Never hard code sensitive data
 	// I made a good faith effort to remove this information using Spring Security, but 
 	// unfortunately, it took a long time and kept locking me out of the app. I asked 
-	// the professor advising on capstone and he said it might be better to leave it in 
+	// the professor advising on my cap stone and he said it might be better to leave it in 
 	// for now since it is so close to end of semester, so I am aware of the problem and 
 	// tried to fix it.
 	@Bean
@@ -59,8 +59,6 @@ public class SpringSecurityConfiguration {
 	}
 	
 	
-	// by default all URLs are protected
-	// Frames by default are not allowed, so we must ensure they are set up.
 	// ITEC-445 SEC04-J Protect sensitive operations with security manager checks.
 	// The following method is Spring Security's method to ensure all requests are authenticated
 	@Bean
