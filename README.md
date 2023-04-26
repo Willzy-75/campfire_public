@@ -1,13 +1,12 @@
-# campfire_public
 # Campfire Stories is an easy to use web application which 
 # allows the user to scrape websites for id tags and builds 
 # a robust Selenium test suite which is complete with a 
 # page factory, controller, base controller, and bare-bones
 # test case.
-# Designed to use minimal resources, the main requirements 
-# are an internet connection and a small amount of hard 
-# drive space to store the program and the tests cases it
-# generates. 
+# Designed to use minimal resources, the main 
+# requirements are an internet connection and a small 
+# amount of hard drive space to store the program and 
+# the tests cases it generates. 
 # 
 # CLI Deployment
 # Git Bash or some other local implementation of git should
@@ -44,8 +43,9 @@
 # 
 # Using the Application
 # Logging in and Basic navigation
-# There are several usernames and passwords built into the 
-# application: 
+# There are several usernames and passwords built into 
+# the application: 
+# 
 #         Username    Password
 #         Will	      Test
 #         Client	    Test
@@ -174,7 +174,7 @@
 #   (which has a place for the user to add various methods 
 #   as created in the Page Controller), and an @AfterMethod
 #   to tear down the test upon completion. 
-# Campfire Stories is an easy to use web application which
+# 
 # Notes on large websites: after border testing the 
 # application with large websites with 50+ ID tags on one
 # page, the developer recommends using the URL ID Scraper
