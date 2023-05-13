@@ -17,8 +17,6 @@ public class DateTracker {
 		this.time = time;
 	}
 
-	// ITEC-445 OBJ05-J Do not return references to private mutable class members
-	// Updated getter to fix as shown in example code in standards
 	public Date getDate() {
 		return (Date)date.clone();
 	}

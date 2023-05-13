@@ -67,8 +67,6 @@ public class Todo {
 		this.description = description;
 	}
 
-	// ITEC-445 OBJ05-J Do not return references to private mutable class members
-	// Updated from Date to LocalDate to create an immutable class instead of using Date
 	public LocalDate getTargetDate() {
 		return targetDate;
 	}

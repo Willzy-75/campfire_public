@@ -33,11 +33,7 @@ public class TestSuiteControllerJpa {
 			@RequestParam String name, @RequestParam String outputDirectory,
 			@RequestParam(value = "baseControllerNeeded", required = false) boolean baseControllerNeeded) {
 		try { 	
-				// ITEC-445 ERR53-J. Try to gracefully recover from system errors
-				// uses try catch on input from user to ensure it isn't null, avoiding 
-				// potential system errors
-				// ITEC-445 IDS03-J do not log unsanitized user input
-				// this checks if values are null
+				
 			if (url == null || url.isEmpty() || packageName == null || packageName.isEmpty() || name == null
 					|| name.isEmpty() || outputDirectory == null || outputDirectory.isEmpty()) {
 				throw new IllegalArgumentException("Input parameters must not be null or empty.");
@@ -71,8 +67,7 @@ public class TestSuiteControllerJpa {
 			headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + name + ".java");
 			headers.add(HttpHeaders.CONTENT_TYPE, "text/plain");
 			return ResponseEntity.ok().headers(headers).contentLength(resource.contentLength()).body(resource);
-			// ITEC-445 ERR08-J Do not log null pointer exceptions
-			// changed from NullPointerException to IOException and IllegalArgumentException
+		
 		} catch (IOException | IllegalArgumentException e) {
 			
 			return ResponseEntity.badRequest().body(null);

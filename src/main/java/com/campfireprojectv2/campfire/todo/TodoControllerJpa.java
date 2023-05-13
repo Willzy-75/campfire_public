@@ -36,8 +36,6 @@ public class TodoControllerJpa {
 		return "listTodos";
 	}
 
-	// ITEC-445 SEC04-J Protect sensitive operations with security manager checks
-	// The following code is used to authenticate the user 
 	private String getLoggedInUsername(ModelMap model) {
 		Authentication authentication = 
 				SecurityContextHolder.getContext().getAuthentication();
@@ -45,12 +43,9 @@ public class TodoControllerJpa {
 		
 	}
 	
-	// GET only need separate method for POST
 	@RequestMapping(value="add-todo", method=RequestMethod.GET)
 	public String showNewTodoPage(ModelMap model) {
 		String username = getLoggedInUsername(model);
-		// ITEC-445 OBJ06-J Defensively copy mutable inputs and mutable internal components
-		// Created a copy of LocalDate and used that when instantiating the Todo object
 		LocalDate copyDate = LocalDate.now().plusYears(1);
 		Todo todo = new Todo(0, username, "Enter Description", copyDate, false);
 		model.put("todo", todo);
